@@ -2,7 +2,6 @@ package Dunamu.SearchArticles.controller;
 
 import Dunamu.SearchArticles.Model.ArticlesVO;
 import Dunamu.SearchArticles.Service.MdFileWriterService;
-import Dunamu.SearchArticles.Service.MdFileWriterServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -11,8 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
@@ -21,13 +19,13 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class SearchArticlesController {
+public class SearchArticlesController implements CommandLineRunner {
 
     private final MdFileWriterService mdFileWriterService;
 
     private WebElement element;
 
-    public void searchArticles(String keyword) {
+    public String searchArticles(String keyword) {
 
         ChromeOptions options = new ChromeOptions();
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
@@ -73,18 +71,22 @@ public class SearchArticlesController {
                     voList.add(vo);
                 }
             }
+
             //파일만들기
-            mdFileWriterService.writeFile(today, voList);
+            mdFileWriterService.writeFile(keyword, today, voList);
 
-            log.info(keyword, ":: ", today, " ", voList.size(), "건 생성 완료");
-
+        } catch (Exception e) {
+            log.info("error ======>", e.getMessage());
         } finally {
             driver.quit();
         }
+
+        return "ok";
     }
 
-    public static void main(String[] args) {
-
+    @Override
+    public void run(String... args) throws Exception {
+        searchArticles("두나무");
+        searchArticles("블록체인");
     }
-
 }

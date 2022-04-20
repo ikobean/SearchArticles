@@ -23,7 +23,7 @@ class FileMakeTest {
         voList.add(vo);
 
 
-        String result = md.writeFile("20220418", voList);
+        String result = md.writeFile("블록체인", "20220418", voList);
         Assertions.assertThat(result).isEqualTo("ok");
     }
 }
