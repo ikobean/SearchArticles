@@ -1,6 +1,7 @@
 package Dunamu.SearchArticles.controller;
 
 import Dunamu.SearchArticles.Model.ArticlesVO;
+import Dunamu.SearchArticles.Service.MdFileWriterServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class MdFileWriterTest {
     @Autowired
-    MdFileWriter md = new MdFileWriter();
+    MdFileWriterServiceImpl md = new MdFileWriterServiceImpl();
 
     @Test
     public void fileMakeTest(){

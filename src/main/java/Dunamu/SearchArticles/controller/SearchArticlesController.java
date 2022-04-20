@@ -1,8 +1,9 @@
 package Dunamu.SearchArticles.controller;
 
 import Dunamu.SearchArticles.Model.ArticlesVO;
-import Dunamu.SearchArticles.SearchArticlesApplication;
-import ch.qos.logback.core.util.DatePatternToRegexUtil;
+import Dunamu.SearchArticles.Service.MdFileWriterService;
+import Dunamu.SearchArticles.Service.MdFileWriterServiceImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.PageLoadStrategy;
@@ -10,28 +11,28 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
 @Slf4j
-//@RequestMapping("/searchArticles")
-//@RestController
+@RequiredArgsConstructor
 @Controller
 public class SearchArticlesController {
+
+    private final MdFileWriterService mdFileWriterService;
+
     private WebElement element;
 
-    public MdFileWriter fileWriter = new MdFileWriter();
-    //@GetMapping("/search")
-    public String searchArticles(String keyword){
+    public void searchArticles(String keyword) {
 
         ChromeOptions options = new ChromeOptions();
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
         options.addArguments("--start-maximized");
         options.addArguments("--disable-popup-blocking");
-        keyword = "업비트";
         WebDriver driver = new ChromeDriver(options);
 
         try {
@@ -67,29 +68,23 @@ public class SearchArticlesController {
 
                     vo.setDate(today);
                     vo.setTitle(title);
-                    System.out.println(title);
                     vo.setUrl(url);
+
                     voList.add(vo);
-                    System.out.println(voList);
-
                 }
-
             }
-            System.out  .println("today:"+today+"voList"+voList);
             //파일만들기
-            fileWriter.writeFile(today, voList);
+            mdFileWriterService.writeFile(today, voList);
+
+            log.info(keyword, ":: ", today, " ", voList.size(), "건 생성 완료");
 
         } finally {
-           //driver.quit();
+            driver.quit();
         }
-        return "ok";
     }
 
     public static void main(String[] args) {
-        SearchArticlesController srch = new SearchArticlesController();
-        String result = srch.searchArticles("두나무");
-        System.out.println("result = " + result);
-    }
 
+    }
 
 }

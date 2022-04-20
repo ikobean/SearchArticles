@@ -1,14 +1,17 @@
-package Dunamu.SearchArticles.controller;
+package Dunamu.SearchArticles.Service;
 
 import Dunamu.SearchArticles.Model.ArticlesVO;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.*;
+
 @Service
-public class MdFileWriter implements MdFileWriterService{
+@Component
+public class MdFileWriterServiceImpl implements MdFileWriterService {
     @Override
-    public String writeFile(String date, List<ArticlesVO> param){
+    public String writeFile(String date, List<ArticlesVO> param) {
 /*
         ArticlesVO vo = new ArticlesVO();
         List<ArticlesVO> voList = new ArrayList<>();

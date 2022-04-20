@@ -1,4 +1,4 @@
-package Dunamu.SearchArticles.controller;
+package Dunamu.SearchArticles.Service;
 
 import Dunamu.SearchArticles.Model.ArticlesVO;
 
