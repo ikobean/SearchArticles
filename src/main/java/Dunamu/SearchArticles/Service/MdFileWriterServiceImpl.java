@@ -15,10 +15,10 @@ public class MdFileWriterServiceImpl implements MdFileWriterService {
     public String writeFile(String keyword, String date, List<ArticlesVO> param) {
         try {
             //파일객체 생성
-            File file = new File("D:\\github\\Article\\" + date + keyword + ".md");
+            File file = new File("D:\\github\\Articles\\" + date + keyword + ".md");
 
             file.createNewFile();
-            FileWriter fw = new FileWriter("D:\\github\\Article\\" + date + keyword + ".md");
+            FileWriter fw = new FileWriter("D:\\github\\Articles\\" + date + keyword + ".md");
 
             for (ArticlesVO atc : param) {
                 fw.write("[" + atc.getTitle() + "](" + atc.getUrl() + ")" + "  " + "\r\n");
